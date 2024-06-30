@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { RotatingLines } from "react-loader-spinner";
 import { Toaster, toast } from "react-hot-toast";
@@ -8,40 +8,40 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import "./App.css";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ImageModal from "../ImageModal/ImageModal";
-import Modal from "react-modal";
+
+export type Photo = {
+  id: string;
+  slug: string;
+  urls: {
+    full: string;
+    small: string;
+  };
+};
 
 function App() {
-  const [searchText, setSearchText] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState(false);
-
-  const [photos, setPhotos] = useState([]);
-
-  const [page, setPage] = useState(1);
-
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [searchText, setSearchText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [photos, setPhotos] = useState<Photo[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [modalIsOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
 
   const handleLoadMore = () => {
     setPage(page + 1);
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = (query: string | null): void => {
     if (query === null) {
       toast.error("Please enter a search word");
     } else {
       setPage(1);
       setSearchText(query);
       setPhotos([]);
-      console.log(`Searching for: ${query}1`);
-      console.log(`Searching for: ${searchText}2`);
     }
   };
 
-  const openModal = (image) => {
+  const openModal = (image: Photo): void => {
     setSelectedImage(image);
     setIsOpen(true);
   };
@@ -77,16 +77,6 @@ function App() {
 
     fetchArticles();
   }, [searchText, page]);
-
-  useEffect(() => {
-    // Встановлюємо елемент програми для react-modal
-    Modal.setAppElement("#root");
-
-    return () => {
-      // Забираємо елемент програми при видаленні компонента
-      Modal.setAppElement(null);
-    };
-  }, []);
 
   return (
     <>

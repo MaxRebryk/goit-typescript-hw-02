@@ -1,9 +1,22 @@
+import React from "react";
 import { Formik, Form, Field } from "formik";
-
 import css from "./SearchBar.module.css";
-export default function SearchBar({ onSearch }) {
-  const initialValues = { search: "" };
-  const handleSubmit = (values, { resetForm }) => {
+
+type SearchBarProps = {
+  onSearch: (query: string | null) => void;
+};
+
+type FormValues = {
+  search: string;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const initialValues: FormValues = { search: "" };
+
+  const handleSubmit = (
+    values: FormValues,
+    { resetForm }: { resetForm: () => void }
+  ) => {
     if (values.search === "") {
       onSearch(null);
     } else {
@@ -11,6 +24,7 @@ export default function SearchBar({ onSearch }) {
       resetForm();
     }
   };
+
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className={css.form}>
@@ -25,4 +39,6 @@ export default function SearchBar({ onSearch }) {
       </Form>
     </Formik>
   );
-}
+};
+
+export default SearchBar;

@@ -1,6 +1,12 @@
 import ImageCard from "../ImageCard/ImageCard";
+import { Photo } from "../App/App";
 
-export default function ImageGallery({ photos, openModal }) {
+type Props = {
+  photos: Photo[];
+  openModal: (image: { id: string; url: string; title: string }) => void;
+};
+
+export default function ImageGallery({ photos, openModal }: Props) {
   return (
     <ul>
       {photos.map(({ id, slug, urls }) => (

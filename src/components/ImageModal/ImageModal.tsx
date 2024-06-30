@@ -1,7 +1,17 @@
+import React from "react";
 import Modal from "react-modal";
 
-export default function ImageModal({ modalIsOpen, isOpen, selectedImage }) {
-  let subtitle;
+type ImageModalProps = {
+  modalIsOpen: boolean;
+  isOpen: (open: boolean) => void;
+  selectedImage: { id: string; url: string; title: string } | null;
+};
+
+export default function ImageModal({
+  modalIsOpen,
+  isOpen,
+  selectedImage,
+}: ImageModalProps) {
   const customStyles = {
     content: {
       top: "50%",
@@ -23,6 +33,7 @@ export default function ImageModal({ modalIsOpen, isOpen, selectedImage }) {
       onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Image Modal"
+      ariaHideApp={false} // This should be set in the root component, here for simplicity
     >
       <h2>{selectedImage ? selectedImage.title : "Image"}</h2>
       {selectedImage && (
